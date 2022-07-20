@@ -84,7 +84,7 @@ public class Player
                         
                         // We want to print the list of all "valid" destinations to the System Log
 
-                        string combinedList = "";
+                        string combinedList = "PIECE: " + piece.name + "; DEST: ";
                         foreach(GameObject tileFromList in destTiles) {
                             if(destTiles.FindIndex(a => (a == tileFromList)) == 0)
                                 combinedList += tileFromList.name;
@@ -92,7 +92,7 @@ public class Player
                                 combinedList += (", " + tileFromList.name);
                         }
 
-                        Debug.Log("AI found these possible moves: \n" + combinedList);
+                        Debug.Log("AI-" + name + " found these possible moves: \n" + combinedList);
 
                         // --- <<< END OF DEBUGGING >>> ---
 
