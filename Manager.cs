@@ -159,7 +159,7 @@ public class Manager : MonoBehaviour
     //            and:   Player -> GetAllMoves()
     public List<GameObject> ValidDestinations(GameObject piece, GameObject currTile)
     {
-        //start by clearing optionsGrid
+        //start by clearing optionsGrid (sets all to 'false')
         ClearValid();
 
         string team = PieceOwner(piece); //which team the piece belongs to
@@ -176,8 +176,9 @@ public class Manager : MonoBehaviour
         if(type.Contains("Bishop")){
             piece.GetComponent<Bishop>().OptionsGrid(optionsGrid, currRank,currFile);
 
-            //edit optionsGrid, so that bishop can't jump over other pieces
-            //check LEFT & UP
+            // Edit optionsGrid, so that bishop can't jump over other pieces
+
+            // check LEFT & UP
             int rank = currRank+1;
             int file = currFile-1;
             bool pieceFound = false;
@@ -201,7 +202,7 @@ public class Manager : MonoBehaviour
                 file = file-1;
                 rank = rank+1;
             }
-            //check RIGHT & UP
+            // check RIGHT & UP
             file = currFile+1;
             rank = currRank+1;
             pieceFound = false;
@@ -224,7 +225,7 @@ public class Manager : MonoBehaviour
                 file = file+1;
                 rank = rank+1;    
             }
-            //check LEFT & DOWN
+            // check LEFT & DOWN
             file = currFile-1;
             rank = currRank-1;
             pieceFound = false;
@@ -246,7 +247,7 @@ public class Manager : MonoBehaviour
                 rank = rank-1;
                 file = file-1;    
             }
-            //check RIGHT & DOWN
+            // check RIGHT & DOWN
             rank = currRank-1;
             file = currFile+1;
             pieceFound = false;
@@ -273,9 +274,11 @@ public class Manager : MonoBehaviour
         else if(type.Contains("King")){
             piece.GetComponent<King>().OptionsGrid(optionsGrid, currRank,currFile);
         }
+
         else if(type.Contains("Horse")){
             piece.GetComponent<Knight>().OptionsGrid(optionsGrid, currRank,currFile);
         }
+
         else if(type.Contains("Pawn")){ // <--- SPECIAL CASE
             bool hasMoved = movedPawns.Contains(piece);
             piece.GetComponent<Pawn>().OptionsGrid(optionsGrid, currRank, currFile, hasMoved);
@@ -285,19 +288,30 @@ public class Manager : MonoBehaviour
             int rankMin = currRank-1;
             int fileMin = currFile-1;
 
+            // NOTE:
+            // Why am I setting optionsGrid indexes to 'false'--again? 
+            // I start this function with ClearValid(), which sets all values to false. As such, I can't think of any reason for checking conditions under the premise of doing so (i.e. it's redundant).
+            // It makes more sense to check conditions that reveal valid destinations and change the relevant optionsGrid index to 'true'.
+
             if(currentPlayer.name == "white"){
-                if(currFile != 7)
+                if(currFile != 7) // check for possible captures
                     if(pieces[rankPlus, filePlus] != null && PieceOwner(pieces[rankPlus, filePlus]) == "black")
                         optionsGrid[rankPlus,filePlus] = true;
-                if(currFile != 0)    
+                if(currFile != 0) // check for possible captures   
                     if(pieces[rankPlus, fileMin] != null && PieceOwner(pieces[rankPlus, fileMin]) == "black")
                         optionsGrid[rankPlus, fileMin] = true;
-                if(pieces[rankPlus, currFile] != null)// && PieceOwner(pieces[rankPlus, currFile]) == "black")
+                if(pieces[rankPlus, currFile] != null) // 1 space fwd = occ
                     optionsGrid[rankPlus, currFile] = false;
-                if(pieces[rankPlus+1, currFile] != null)
+                if(pieces[rankPlus+1, currFile] != null) // 2 spaces fwd = occ
                     optionsGrid[rankPlus+1, currFile] = false;
+                else if(pieces[rankPlus+1, currFile] == null) // 2 sp fwd = open
+                    if(pieces[rankPlus, currFile] != null) // 1 space fwd = occ
+                        optionsGrid[rankPlus, currFile] = false;
+                    else // 1 space fwd = open
+                        optionsGrid[rankPlus, currFile] = true;
             }
             
+            // TODO: Apply above changes to the code below!
             else //currentPlayer is black
             {
                 if(currFile != 7)
@@ -306,17 +320,18 @@ public class Manager : MonoBehaviour
                 if(currFile != 0)
                     if(pieces[rankMin, fileMin] != null && PieceOwner(pieces[rankMin, fileMin]) == "white")
                         optionsGrid[rankMin, fileMin] = true;
-                if(pieces[rankMin, currFile] != null)// && PieceOwner(pieces[rankMin, currFile]) == "black")
+                if(pieces[rankMin, currFile] != null)
                     optionsGrid[rankMin, currFile] = false;
                 if(pieces[rankMin-1, currFile] != null)
                     optionsGrid[rankMin-1, currFile] = false;
             }
 
         }
+
         else if(type.Contains("Queen")){
             piece.GetComponent<Queen>().OptionsGrid(optionsGrid, currRank,currFile);
 
-            //This one's a mess, huh? :')
+            // This one's a mess, huh? :')
             //check LEFT & UP
             int rank = currRank+1;
             int file = currFile-1;

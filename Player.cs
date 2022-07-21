@@ -84,7 +84,7 @@ public class Player
                         
                         // We want to print the list of all "valid" destinations to the System Log
 
-                        string combinedList = "PIECE: " + piece.name + "; DEST: ";
+                        string combinedList = "PIECE: " + piece.name + "; POS: "+ tile.name + "; DEST: ";
                         foreach(GameObject tileFromList in destTiles) {
                             if(destTiles.FindIndex(a => (a == tileFromList)) == 0)
                                 combinedList += tileFromList.name;
