@@ -103,6 +103,7 @@ public class Pawn : PieceBaseClass
     }
 
     //Manager must call this function because the pawn's movement depends on whether or not it has already moved
+    //  NOTE: This is never called???
     public List<Transform> GetValidDestinations(GameObject piece, Transform currTile, bool hasMoved)
     {
         List<Transform> validDestinations = new List<Transform>();
@@ -117,22 +118,88 @@ public class Pawn : PieceBaseClass
     //Manager must call this function because the pawn's movement depends on whether or not it has already moved
     public void OptionsGrid(bool[,] theGrid, int currRank, int currFile, bool hasMoved)
     {
-        //start by setting all indeces to false
-        for(int i = 0; i < 8; i=i+1){
-            for(int j = 0; j < 8; j=j+1){
-                theGrid[i,j] = false;
-            }
-        }
+        
+        Debug.Log("Running function OptionsGrid in file Pawn.cs!!!");
+
+        // Manager has already set all indeces to false
+
+        int rankPlus = currRank+1;
+        int filePlus = currFile+1;
+        int rankMin = currRank-1;
+        int fileMin = currFile-1;
         
         //One tile ahead is always allowed (unless occupied by teammate)
         int val = currRank + posZ;
         theGrid[val, currFile] = true;
         val = val + posZ;
 
+        
         if(!hasMoved)
             theGrid[val, currFile] = true;
         
         
+    }
+
+    // NOTE: 
+    // I've moved all code from Manager.ValidDestionations() that's relevant to pawns to this new function (and slightly edited it to work when called from this new position) and changed the code in Manager.ValidDestionations() so that it calls this function rather than the one above.
+    public void OptionsGrid(GameObject[,] pieces, bool[,] optionsGrid, Manager manager, Player currentPlayer, int currRank, int currFile, bool hasMoved) {
+
+        int rankPlus = currRank+1;
+        int filePlus = currFile+1;
+        int rankMin = currRank-1;
+        int fileMin = currFile-1;
+
+        if(currentPlayer.name == "white"){
+            if(currFile != 7) // check for possible captures
+                if(pieces[rankPlus, filePlus] != null && manager.PieceOwner(pieces[rankPlus, filePlus]) == "black")
+                    optionsGrid[rankPlus,filePlus] = true;
+            if(currFile != 0) // check for possible captures   
+                if(pieces[rankPlus, fileMin] != null && manager.PieceOwner(pieces[rankPlus, fileMin]) == "black")
+                    optionsGrid[rankPlus, fileMin] = true;
+            if(pieces[rankPlus, currFile] != null) // 1 space fwd = occ
+                optionsGrid[rankPlus, currFile] = false;
+            else // 1 space fwd = open
+                optionsGrid[rankPlus, currFile] = true;
+            if(!hasMoved) // unmoved pawn => check 2 spaces forward
+            {
+                if(pieces[rankPlus+1, currFile] != null) // 2 sp fwd = occ
+                    optionsGrid[rankPlus+1, currFile] = false;
+                else if(pieces[rankPlus+1, currFile] == null) // 2 sp fwd = open
+                {
+                    if(pieces[rankPlus, currFile] != null) // 1 sp fwd = occ
+                        optionsGrid[rankPlus+1, currFile] = false; // 2 sp fwd = inv
+                    else // 1 sp fwd = open
+                        optionsGrid[rankPlus+1, currFile] = true; // 2 sp fwd = val
+                }
+            }
+        }
+        
+        else //currentPlayer is black
+        {
+            if(currFile != 7) // check for possible captures
+                if(pieces[rankMin, filePlus] != null && manager.PieceOwner(pieces[rankMin, filePlus]) == "white")
+                    optionsGrid[rankMin, filePlus] = true;
+            if(currFile != 0) // check for possible captures
+                if(pieces[rankMin, fileMin] != null && manager.PieceOwner(pieces[rankMin, fileMin]) == "white")
+                    optionsGrid[rankMin, fileMin] = true;
+            if(pieces[rankMin, currFile] != null) // 1 space fwd = occ
+                optionsGrid[rankMin, currFile] = false;
+            else // 1 space fwd = open
+                optionsGrid[rankMin, currFile] = true;
+            if(!hasMoved) // unmoved pawn => check 2 spaces forward
+            {
+                if(pieces[rankMin-1, currFile] != null) // 2 sp fwd = occ
+                    optionsGrid[rankMin-1, currFile] = false;
+                else if(pieces[rankMin-1, currFile] == null) // 2 sp fwd = open
+                {
+                    if(pieces[rankMin, currFile] != null) // 1 sp fwd = occ
+                        optionsGrid[rankMin-1, currFile] = false; // 2 sp fwd = inv
+                    else // 1 sp fwd = open
+                        optionsGrid[rankMin-1, currFile] = true; // 2 sp fwd = val
+                }
+            }
+        }
+
     }
 
     public override void MovePiece(Vector3 dest, bool attack)
