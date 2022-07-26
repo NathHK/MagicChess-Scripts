@@ -178,6 +178,10 @@ public class Bishop : PieceBaseClass
 
         // MOVEMENT RULE:
         // Bishops can move diagonally in all directions, any number of squares, but cannot jump over other pieces.
+        
+        // TODO:
+        // - Merge functionality of code below (taken from Manager.cs) and code from the old OptionsGrid funtion above this one.
+        // - Reformat the while statements so that the loop stops once a piece is found along the path. The location of the found piece, and all tiles beyond that, are already marked as false and should remain that way.
 
         // check LEFT & UP
         int rank = currRank+1;
