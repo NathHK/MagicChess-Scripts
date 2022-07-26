@@ -119,10 +119,10 @@ public class Pawn : PieceBaseClass
     public void OptionsGrid(bool[,] theGrid, int currRank, int currFile, bool hasMoved)
     {
         
-        Debug.Log("Running function OptionsGrid in file Pawn.cs!!!");
+        Debug.Log("Running old OptionsGrid function in file Pawn.cs!!!");
 
         // Manager has already set all indeces to false
-
+        /*
         int rankPlus = currRank+1;
         int filePlus = currFile+1;
         int rankMin = currRank-1;
@@ -136,7 +136,7 @@ public class Pawn : PieceBaseClass
         
         if(!hasMoved)
             theGrid[val, currFile] = true;
-        
+        */
         
     }
 
@@ -242,6 +242,11 @@ public class Pawn : PieceBaseClass
 
     private void OnCollisionEnter(Collision other) {
        
+       // NOTE:
+       // Turns out that Pawn is the only file to include the check for 
+       //       && other.gameObject.tag != weapon.tag
+       // Interesting... Maybe I originally had it there for all of them, later removed it, but accidentally left it in Pawn.cs.
+
         if(other.gameObject.tag.Contains("Weapon") && other.gameObject != weapon)// && other.gameObject.tag != weapon.tag)
         {
             Debug.Log(other.gameObject.tag);
