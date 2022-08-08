@@ -172,104 +172,16 @@ public class Manager : MonoBehaviour
         // So, in which direction should I move things?
         //  I think that the cleanest way to do this would be to move all code to the <piece-name>.cs files.
 
-        //fill the optionsGrid 2d-array using correct call to OptionsGrid()
-        if(type.Contains("Bishop")){
-            piece.GetComponent<Bishop>().OptionsGrid(optionsGrid, currRank,currFile);
+        // Fill the optionsGrid 2d-array using correct call to OptionsGrid()
 
-            // Edit optionsGrid, so that bishop can't jump over other pieces
+        if(type.Contains("Bishop")) {
+            
+            //piece.GetComponent<Bishop>().OptionsGrid(optionsGrid, currRank,currFile); // Calls old function...
+            
+            // Call Bishop.cs's improved OptionsGrid() function:
+            piece.GetComponent<Bishop>().OptionsGrid(pieces, optionsGrid, instance, currentPlayer, piece, currRank, currFile);
 
-            // check LEFT & UP
-            int rank = currRank+1;
-            int file = currFile-1;
-            bool pieceFound = false;
-            int pFoundAt = file;
-            bool validFound = false;
-            int vFoundAt = file;
-
-            while(file>=0 && file<=7 && rank<=7 && rank>=0){
-                if(!pieceFound && pieces[rank,file] != null && PieceOwner(pieces[rank,file])== PieceOwner(piece))
-                {
-                    pieceFound = true;
-                    pFoundAt = file;
-                }
-                if(!validFound && pieces[rank,file] != null && optionsGrid[rank,file] && PieceOwner(pieces[rank,file]) != "" && PieceOwner(pieces[rank,file]) != PieceOwner(piece)){
-                    validFound = true;
-                    vFoundAt = file;
-                }
-                if((pieceFound && file<pFoundAt) || (validFound && file < vFoundAt))
-                    optionsGrid[rank,file] = false;
-
-                file = file-1;
-                rank = rank+1;
-            }
-            // check RIGHT & UP
-            file = currFile+1;
-            rank = currRank+1;
-            pieceFound = false;
-            validFound = false;
-            pFoundAt = file;
-            vFoundAt = file;
-            while(file<=7 && file>=0 && rank<=7 && rank>=0){
-                if(pieces[rank,file] != null && PieceOwner(pieces[rank,file])== PieceOwner(piece))
-                {
-                    pieceFound = true;
-                    pFoundAt = file;
-                }
-                if(!validFound && pieces[rank,file] != null && optionsGrid[rank,file] && PieceOwner(pieces[rank,file]) != "" && PieceOwner(pieces[rank,file]) != PieceOwner(piece)){
-                    validFound = true;
-                    vFoundAt = file;
-                }
-                if((pieceFound && file > pFoundAt) || (validFound && file>vFoundAt))
-                    optionsGrid[rank,file] = false;
-
-                file = file+1;
-                rank = rank+1;    
-            }
-            // check LEFT & DOWN
-            file = currFile-1;
-            rank = currRank-1;
-            pieceFound = false;
-            pFoundAt = rank;
-            validFound = false;
-            vFoundAt = rank;
-            while(rank<=7 && rank>=0 && file>=0 && file<=7){
-                if(pieces[rank,file] != null && PieceOwner(pieces[rank,file])== PieceOwner(piece))
-                {
-                    pieceFound = true;
-                    pFoundAt = rank;
-                }
-                if(!validFound && pieces[rank,file] != null && optionsGrid[rank,file] && PieceOwner(pieces[rank,file]) != "" && PieceOwner(pieces[rank,file]) != PieceOwner(piece)){
-                    validFound = true;
-                    vFoundAt = rank;
-                }
-                if((pieceFound && rank>pFoundAt) || (validFound && rank>vFoundAt))
-                    optionsGrid[rank,file] = false;
-                rank = rank-1;
-                file = file-1;    
-            }
-            // check RIGHT & DOWN
-            rank = currRank-1;
-            file = currFile+1;
-            pieceFound = false;
-            pFoundAt = rank;
-            validFound = false;
-            vFoundAt = rank;
-            while(rank>=0 && rank<=7 && file<=7 && file>=0){
-                if(pieces[rank,file] != null && PieceOwner(pieces[rank,file])== PieceOwner(piece))
-                {
-                    pieceFound = true;
-                    pFoundAt = rank;
-                }
-                if(!validFound && pieces[rank,file] != null && optionsGrid[rank,file] && PieceOwner(pieces[rank,file]) != "" && PieceOwner(pieces[rank,file]) != PieceOwner(piece)){
-                    validFound = true;
-                    vFoundAt = rank;
-                }
-                if((pieceFound && rank<pFoundAt) || (validFound && rank<vFoundAt))
-                    optionsGrid[rank,file] = false;
-                rank = rank-1;
-                file = file+1;
-            }
-        } //end of BISHOP
+        } // end of BISHOP
 
         else if(type.Contains("King")){
             piece.GetComponent<King>().OptionsGrid(optionsGrid, currRank,currFile);

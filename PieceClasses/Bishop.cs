@@ -104,67 +104,11 @@ public class Bishop : PieceBaseClass
         return validDestinations;
     }
 
+    // Old function w/ body removed. Should never be called.
     public override void OptionsGrid(bool[,] theGrid, int currRank, int currFile)
     {
 
         Debug.Log("Running old OptionsGrid function in file Bishop.cs!!!");
-
-        // NOTE:
-        // Why did I make a new array if one was received through the function call? Maybe this is one of the culprits of invalid move calculations... Just a guess, though.
-        // BRUH. No wonder my code had issues. It's such a mess! -.-
-
-        bool[,] grid = new bool[8,8];
-
-        //set counters to current values
-        int rank = currRank;
-        int file = currFile;
-
-        //initialize all to /false/
-        for(int i = 0; i< 8; i=i+1){
-            for(int j = 0; j < 8; j=j+1) {
-                theGrid[i,j] = false;
-            }
-        }
-        
-        //Bishop can move as far as it wants along any diagonal
-
-        //checked for all bounds because my brain can't comprehend white vs black movement direction -.-
-
-        //left and up
-        rank = rank+1;
-        file = file-1;
-        while(rank <= 7 && file >= 0 && 0<=rank && 7>=file){
-            theGrid[rank,file] = true;
-            rank = rank+1;
-            file = file-1;
-        }
-
-        //left and down
-        rank = currRank-1;
-        file = currFile-1;
-        while(rank >= 0 && file >= 0 && 7>=rank && 7>=file){
-            theGrid[rank,file] = true;
-            rank = rank-1;
-            file = file-1;
-        }
-
-        //right and up
-        rank = currRank+1;
-        file = currFile+1;
-        while(rank <= 7 && file <=7 && 0<=rank && 0<=file){
-            theGrid[rank,file] = true;
-            rank = rank+1;
-            file = file+1;
-        }
-
-        //right and down
-        rank = currRank-1;
-        file = currFile+1;
-        while(rank >= 0 && file > 0 && 7>=rank && 7>=file){
-            theGrid[rank,file] = true;
-            rank = rank-1;
-            file = file+1;
-        }
 
     }
 
@@ -176,148 +120,106 @@ public class Bishop : PieceBaseClass
     // currRank : current rank of piece
     // currFile : current file of piece
     public void OptionsGrid(GameObject[,] pieces, bool[,] optionsGrid, Manager manager, Player currentPlayer, GameObject piece, int currRank, int currFile) 
-    {
-
-        // MOVEMENT RULE:
-        // Bishops can move diagonally in all directions, any number of squares, but cannot jump over other pieces.
+    {	
+		/* MOVEMENT RULE:
+         * Bishops can move diagonally in all directions, any number of squares, but cannot jump over other pieces.
+		 */
+		// Reminder:
+		// Vertical movement = changing rank
+		// Horizontal movement = changing file
         
-        // TODO:
-        // - Merge functionality of code below (taken from Manager.cs) and code from the old OptionsGrid funtion above this one.
-        // - Reformat the while statements so that the loop stops once a piece is found along the path. The location of the found piece, and all tiles beyond that, are already marked as false and should remain that way.
-
-        // NOTE:
-        // I'm not sure that any variables besides rank and file are needed.
-        // They're used in the code below, sure, but overall, it seems like their values don't have much (if any) worth.
-
-        // check LEFT & UP
+		// check LEFT & UP:
         int rank = currRank+1;
         int file = currFile-1;
-        bool pieceFound = false;
-        int pFoundAt = file;
-        bool validFound = false;
-        int vFoundAt = file;
-
-        while(file >= 0 && file <= 7 && rank <= 7 && rank >= 0) 
-        {
-            /* CODE DECODING: 
-             * !pieceFound && pieces[rank,file] != null
-             *      No prior pieces have been found on this diagonal, and a piece has been found at position [rank,file].
-             * manager.PieceOwner(pieces[rank,file]) == manager.PieceOwner(piece)
-             *      The current player owns the piece at pos [rank,file].
-             *          => set pos to true; else, set false
-            */
-
-            if(!pieceFound && pieces[rank,file] != null && manager.PieceOwner(pieces[rank,file]) == manager.PieceOwner(piece))
-            {
-                pieceFound = true;
-                pFoundAt = file;
-            }
-
-            /* CODE DECODING:
-             * pieces[rank,file] != null && optionsGrid[rank,file]
-             *       A piece exists at pos [rank,file], and that pos is considered valid.
-             * manager.PieceOwner(pieces[rank,file]) != ""
-             *       The piece at pos [rank,file] belongs to someone
-             *           (Why did I check for this?)
-             * manager.PieceOwner(pieces[rank,file]) != manager.PieceOwner(piece)
-             *       The piece at pos [rank,file] does NOT belong to the current player.
-            */
-
-            if(!validFound && pieces[rank,file] != null && optionsGrid[rank,file] && manager.PieceOwner(pieces[rank,file]) != "" && manager.PieceOwner(pieces[rank,file]) != manager.PieceOwner(piece)){
-                validFound = true;
-                vFoundAt = file;
-            }
-            if((pieceFound && file < pFoundAt) || (validFound && file < vFoundAt))
-                optionsGrid[rank,file] = false;
-
-            file = file-1;
-            rank = rank+1;
-
-        }
-
-        // check RIGHT & UP
-        file = currFile+1;
-        rank = currRank+1;
-        pieceFound = false;
-        validFound = false;
-        pFoundAt = file;
-        vFoundAt = file;
-
-        while(file <= 7 && file >= 0 && rank <= 7 && rank >= 0) 
-        {
-
-            if(pieces[rank,file] != null && manager.PieceOwner(pieces[rank,file])== manager.PieceOwner(piece))
-            {
-                pieceFound = true;
-                pFoundAt = file;
-            }
-            if(!validFound && pieces[rank,file] != null && optionsGrid[rank,file] && manager.PieceOwner(pieces[rank,file]) != "" && manager.PieceOwner(pieces[rank,file]) != manager.PieceOwner(piece)){
-                validFound = true;
-                vFoundAt = file;
-            }
-            if((pieceFound && file > pFoundAt) || (validFound && file>vFoundAt))
-                optionsGrid[rank,file] = false;
-
-            file = file+1;
-            rank = rank+1;    
-
-        }
-
-        // check LEFT & DOWN
-        file = currFile-1;
-        rank = currRank-1;
-        pieceFound = false;
-        pFoundAt = rank;
-        validFound = false;
-        vFoundAt = rank;
-
-        while(rank <= 7 && rank >= 0 && file >= 0 && file <= 7) 
-        {
-
-            if(pieces[rank,file] != null && manager.PieceOwner(pieces[rank,file])== manager.PieceOwner(piece))
-            {
-                pieceFound = true;
-                pFoundAt = rank;
-            }
-            if(!validFound && pieces[rank,file] != null && optionsGrid[rank,file] && manager.PieceOwner(pieces[rank,file]) != "" && manager.PieceOwner(pieces[rank,file]) != manager.PieceOwner(piece)){
-                validFound = true;
-                vFoundAt = rank;
-            }
-            if((pieceFound && rank>pFoundAt) || (validFound && rank>vFoundAt))
-                optionsGrid[rank,file] = false;
-            rank = rank-1;
-            file = file-1;   
-
-        }
-
-        // check RIGHT & DOWN
-        rank = currRank-1;
-        file = currFile+1;
-        pieceFound = false;
-        pFoundAt = rank;
-        validFound = false;
-        vFoundAt = rank;
-
-        while(rank >= 0 && rank <= 7 && file <= 7 && file >= 0) 
-        {
-
-            if(pieces[rank,file] != null && manager.PieceOwner(pieces[rank,file])== manager.PieceOwner(piece))
-            {
-                pieceFound = true;
-                pFoundAt = rank;
-            }
-            if(!validFound && pieces[rank,file] != null && optionsGrid[rank,file] && manager.PieceOwner(pieces[rank,file]) != "" && manager.PieceOwner(pieces[rank,file]) != manager.PieceOwner(piece)){
-                validFound = true;
-                vFoundAt = rank;
-            }
-            if((pieceFound && rank<pFoundAt) || (validFound && rank<vFoundAt))
-                optionsGrid[rank,file] = false;
-            rank = rank-1;
-            file = file+1;
-
-        }
-
-    }
+		
+		// The checks "file <= 7" and "rank >= 0" are technically not needed.
+		// This is b/c rank is being incremented and file decremented.
+		// However, I might keep them there as a "better safe than sorry" approach.
+		while(rank >= 0 && rank <= 7 && file >= 0 && file <= 7)
+		{
+			if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+				if(manager.PieceOwner(pieces[rank,file]) == manager.PieceOwner(piece)) {
+					optionsGrid[rank, file] = false; // technically not needed, but I feel that it adds clarity and is thus worthwhile
+				} else { // it's an enemy piece!
+					optionsGrid[rank, file] = true;
+				}
+				// A piece has been found along this diagonal, so all positions past pos [rank, file] are invalid destinations. Thus, their values should remain false, and we are able to stop looping.
+				break;
+			} else { // pos [rank, file] is empty
+				optionsGrid[rank, file] = true;
+			}
+			// Move to next pos along this diagonal:
+			rank += 1; // up
+			file -= 1; // left
+		}
+		
+		// check RIGHT & UP:
+		rank = currRank + 1;
+		file = currFile + 1;
+		
+		while(rank >= 0 && rank <= 7 && file >= 0 && file <= 7)
+		{
+			if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+				if(manager.PieceOwner(pieces[rank,file]) == manager.PieceOwner(piece)) {
+					optionsGrid[rank, file] = false; 
+				} else { // it's an enemy piece!
+					optionsGrid[rank, file] = true;
+				}
+				// A piece has been found along this diagonal => break while loop
+				break;
+			} else { // pos [rank, file] is empty
+				optionsGrid[rank, file] = true;
+			}
+			// Move to next pos along this diagonal:
+			rank += 1; // up
+			file += 1; // right
+		}
+		
+		// check LEFT & DOWN:
+		rank = currRank - 1;
+		file = currFile - 1;
+		
+		while(rank >= 0 && rank <= 7 && file >= 0 && file <= 7)
+		{
+			if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+				if(manager.PieceOwner(pieces[rank,file]) == manager.PieceOwner(piece)) {
+					optionsGrid[rank, file] = false; 
+				} else { // it's an enemy piece!
+					optionsGrid[rank, file] = true;
+				}
+				// A piece has been found along this diagonal => break while loop
+				break;
+			} else { // pos [rank, file] is empty
+				optionsGrid[rank, file] = true;
+			}
+			// Move to next pos along this diagonal:
+			rank -= 1; // down
+			file -= 1; // left
+		}
+		
+		// check RIGHT & DOWN:
+		rank = currRank - 1;
+		file = currFile + 1;
+		
+		while(rank >= 0 && rank <= 7 && file >= 0 && file <= 7)
+		{
+			if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+				if(manager.PieceOwner(pieces[rank,file]) == manager.PieceOwner(piece)) {
+					optionsGrid[rank, file] = false; 
+				} else { // it's an enemy piece!
+					optionsGrid[rank, file] = true;
+				}
+				// A piece has been found along this diagonal => break while loop
+				break;
+			} else { // pos [rank, file] is empty
+				optionsGrid[rank, file] = true;
+			}
+			// Move to next pos along this diagonal:
+			rank -= 1; // down
+			file += 1; // right
+		}
+		
+	} // END OF OptionsGrid()
 
     public override void MovePiece(Vector3 dest, bool attack)
     {
