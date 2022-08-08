@@ -110,7 +110,9 @@ public class Bishop : PieceBaseClass
         Debug.Log("Running old OptionsGrid function in file Bishop.cs!!!");
 
         // NOTE:
-        // Why did I make a new array if one was received through the function call?
+        // Why did I make a new array if one was received through the function call? Maybe this is one of the culprits of invalid move calculations... Just a guess, though.
+        // BRUH. No wonder my code had issues. It's such a mess! -.-
+
         bool[,] grid = new bool[8,8];
 
         //set counters to current values
@@ -183,6 +185,10 @@ public class Bishop : PieceBaseClass
         // - Merge functionality of code below (taken from Manager.cs) and code from the old OptionsGrid funtion above this one.
         // - Reformat the while statements so that the loop stops once a piece is found along the path. The location of the found piece, and all tiles beyond that, are already marked as false and should remain that way.
 
+        // NOTE:
+        // I'm not sure that any variables besides rank and file are needed.
+        // They're used in the code below, sure, but overall, it seems like their values don't have much (if any) worth.
+
         // check LEFT & UP
         int rank = currRank+1;
         int file = currFile-1;
@@ -193,12 +199,30 @@ public class Bishop : PieceBaseClass
 
         while(file >= 0 && file <= 7 && rank <= 7 && rank >= 0) 
         {
+            /* CODE DECODING: 
+             * !pieceFound && pieces[rank,file] != null
+             *      No prior pieces have been found on this diagonal, and a piece has been found at position [rank,file].
+             * manager.PieceOwner(pieces[rank,file]) == manager.PieceOwner(piece)
+             *      The current player owns the piece at pos [rank,file].
+             *          => set pos to true; else, set false
+            */
 
             if(!pieceFound && pieces[rank,file] != null && manager.PieceOwner(pieces[rank,file]) == manager.PieceOwner(piece))
             {
                 pieceFound = true;
                 pFoundAt = file;
             }
+
+            /* CODE DECODING:
+             * pieces[rank,file] != null && optionsGrid[rank,file]
+             *       A piece exists at pos [rank,file], and that pos is considered valid.
+             * manager.PieceOwner(pieces[rank,file]) != ""
+             *       The piece at pos [rank,file] belongs to someone
+             *           (Why did I check for this?)
+             * manager.PieceOwner(pieces[rank,file]) != manager.PieceOwner(piece)
+             *       The piece at pos [rank,file] does NOT belong to the current player.
+            */
+
             if(!validFound && pieces[rank,file] != null && optionsGrid[rank,file] && manager.PieceOwner(pieces[rank,file]) != "" && manager.PieceOwner(pieces[rank,file]) != manager.PieceOwner(piece)){
                 validFound = true;
                 vFoundAt = file;
