@@ -115,28 +115,11 @@ public class Pawn : PieceBaseClass
         throw new System.NotImplementedException();
     }
 
-    //Manager must call this function because the pawn's movement depends on whether or not it has already moved
+    // Old function w/ body removed. Should never be called.
     public void OptionsGrid(bool[,] theGrid, int currRank, int currFile, bool hasMoved)
     {
         
         Debug.Log("Running old OptionsGrid function in file Pawn.cs!!!");
-
-        // Manager has already set all indeces to false
-        /*
-        int rankPlus = currRank+1;
-        int filePlus = currFile+1;
-        int rankMin = currRank-1;
-        int fileMin = currFile-1;
-        
-        //One tile ahead is always allowed (unless occupied by teammate)
-        int val = currRank + posZ;
-        theGrid[val, currFile] = true;
-        val = val + posZ;
-
-        
-        if(!hasMoved)
-            theGrid[val, currFile] = true;
-        */
         
     }
 

@@ -177,7 +177,7 @@ public class Manager : MonoBehaviour
         if(type.Contains("Bishop")) {
             
             //piece.GetComponent<Bishop>().OptionsGrid(optionsGrid, currRank,currFile); // Calls old function...
-            
+
             // Call Bishop.cs's improved OptionsGrid() function:
             piece.GetComponent<Bishop>().OptionsGrid(pieces, optionsGrid, instance, currentPlayer, piece, currRank, currFile);
 
@@ -195,67 +195,6 @@ public class Manager : MonoBehaviour
             bool hasMoved = movedPawns.Contains(piece);
             //piece.GetComponent<Pawn>().OptionsGrid(optionsGrid, currRank, currFile, hasMoved);
             piece.GetComponent<Pawn>().OptionsGrid(pieces, optionsGrid, instance, currentPlayer, currRank, currFile, hasMoved);
-
-            /* HAVE Pawn.cs DO ALL THIS!!! vvv
-
-            int rankPlus = currRank+1;
-            int filePlus = currFile+1;
-            int rankMin = currRank-1;
-            int fileMin = currFile-1;
-
-            // NOTE:
-            // Why am I setting optionsGrid indexes to 'false'--again? (read note above)
-            // I start this function with ClearValid(), which sets all values to false. As such, I can't think of any reason for checking conditions under the premise of doing so (i.e. it's redundant).
-            // It makes more sense to check conditions that reveal valid destinations and change the relevant optionsGrid index to 'true'.
-
-            if(currentPlayer.name == "white"){
-                if(currFile != 7) // check for possible captures
-                    if(pieces[rankPlus, filePlus] != null && PieceOwner(pieces[rankPlus, filePlus]) == "black")
-                        optionsGrid[rankPlus,filePlus] = true;
-                if(currFile != 0) // check for possible captures   
-                    if(pieces[rankPlus, fileMin] != null && PieceOwner(pieces[rankPlus, fileMin]) == "black")
-                        optionsGrid[rankPlus, fileMin] = true;
-                if(pieces[rankPlus, currFile] != null) // 1 space fwd = occ
-                    optionsGrid[rankPlus, currFile] = false;
-                if(!hasMoved) // unmoved pawn => check 2 spaces forward
-                {
-                    if(pieces[rankPlus+1, currFile] != null) // 2 sp fwd = occ
-                        optionsGrid[rankPlus+1, currFile] = false;
-                    else if(pieces[rankPlus+1, currFile] == null) // 2 sp fwd = open
-                    {
-                        if(pieces[rankPlus, currFile] != null) // 1 sp fwd = occ
-                            optionsGrid[rankPlus+1, currFile] = false; // 2 sp fwd = inv
-                        else // 1 sp fwd = open
-                            optionsGrid[rankPlus+1, currFile] = true; // 2 sp fwd = val
-                    }
-                }
-            }
-            
-            else //currentPlayer is black
-            {
-                if(currFile != 7) // check for possible captures
-                    if(pieces[rankMin, filePlus] != null && PieceOwner(pieces[rankMin, filePlus]) == "white")
-                        optionsGrid[rankMin, filePlus] = true;
-                if(currFile != 0) // check for possible captures
-                    if(pieces[rankMin, fileMin] != null && PieceOwner(pieces[rankMin, fileMin]) == "white")
-                        optionsGrid[rankMin, fileMin] = true;
-                if(pieces[rankMin, currFile] != null) // 1 space fwd = occ
-                    optionsGrid[rankMin, currFile] = false;
-                if(!hasMoved) // unmoved pawn => check 2 spaces forward
-                {
-                    if(pieces[rankMin-1, currFile] != null) // 2 sp fwd = occ
-                        optionsGrid[rankMin-1, currFile] = false;
-                    else if(pieces[rankMin-1, currFile] == null) // 2 sp fwd = open
-                    {
-                        if(pieces[rankMin, currFile] != null) // 1 sp fwd = occ
-                            optionsGrid[rankMin-1, currFile] = false; // 2 sp fwd = inv
-                        else // 1 sp fwd = open
-                            optionsGrid[rankMin-1, currFile] = true; // 2 sp fwd = val
-                    }
-                }
-            }
-        */
-
         }
 
         else if(type.Contains("Queen")){
