@@ -127,12 +127,12 @@ public class Pawn : PieceBaseClass
     // I've moved all code from Manager.ValidDestionations() that's relevant to pawns to this new function (and slightly edited it to work when called from this new position) and changed the code in Manager.ValidDestionations() so that it calls this function rather than the one above.
     public void OptionsGrid(GameObject[,] pieces, bool[,] optionsGrid, Manager manager, Player currentPlayer, int currRank, int currFile, bool hasMoved) {
 
-        int rankPlus = currRank+1;
-        int filePlus = currFile+1;
-        int rankMin = currRank-1;
-        int fileMin = currFile-1;
+        int rankPlus = currRank + 1;
+        int filePlus = currFile + 1;
+        int rankMin = currRank - 1;
+        int fileMin = currFile - 1;
 
-        if(currentPlayer.name == "white"){
+        if(currentPlayer.name == "white") {
             if(currFile != 7) // check for possible captures
                 if(pieces[rankPlus, filePlus] != null && manager.PieceOwner(pieces[rankPlus, filePlus]) == "black")
                     optionsGrid[rankPlus,filePlus] = true;
