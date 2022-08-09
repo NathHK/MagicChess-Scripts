@@ -105,9 +105,12 @@ public class King : PieceBaseClass
         return validDestinations;
     }
 
+    // Old function with body commented-out. Should never be called.
     public override void OptionsGrid(bool[,] theGrid, int currRank, int currFile)
     {
-        bool[,] grid = new bool[8,8];
+        Debug.Log("Running old OptionsGrid function in file King.cs!!!");
+
+        /* bool[,] grid = new bool[8,8];
 
         //set counters to current values
         int rank = currRank;
@@ -166,10 +169,97 @@ public class King : PieceBaseClass
         rank = currRank-1;
         file = currFile;
         if(rank>=0 && rank<=7)
-            theGrid[rank,file] = true;
+            theGrid[rank,file] = true; */
         
-
     }
+
+    // NEW OptionsGrid() function:
+    // 	pieces : current locations of all pieces on the board
+    // 	optionsGrid : validity of destinations; starts all false
+    // 	manager : manager of the current game
+    // 	currentPlayer : player whose turn it is
+    // 	piece : the piece to determine the valid destinations for
+    // 	currRank : current rank of piece
+    // 	currFile : current file of piece
+    public void OptionsGrid(GameObject[,] pieces, bool[,] optionsGrid, Manager manager, Player currentPlayer, GameObject piece, int currRank, int currFile)
+    {
+        /* MOVEMENT RULES:
+        * One square in any direction, so long as that square is not attacked by an enemy piece. 
+        * Able to make a special move, known as castling.
+        */
+        
+        // IMPORTANT NOTE:
+        //		The logic used for this function is incomplete!
+        //		Reason: does not check if dest puts king in check
+        //				does not allow for castling
+        
+        // Reminder:
+        // Vertical movement = changing rank
+        // Horizontal movement = changing file
+        
+        // Recall: Manager has already set all values in optionsGrid to false
+        
+        // check LEFT
+        int file = currFile - 1;
+        int rank = currRank;
+        if(file >= 0) {
+            if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+                if(manager.PieceOwner(pieces[rank, file]) == manager.PieceOwner(piece)) {
+                    optionsGrid[rank, file] = false;
+                } else { // it's an enemy piece!
+                    optionsGrid[rank, file] = true;
+                }
+            } else { // pos [rank, file] is empty
+                optionsGrid[rank, file] = true;
+            }
+        }
+        
+        // check RIGHT
+        file = currFile + 1;
+        rank = currRank;
+        if(file <= 7) {
+            if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+                if(manager.PieceOwner(pieces[rank, file]) == manager.PieceOwner(piece)) {
+                    optionsGrid[rank, file] = false;
+                } else { // it's an enemy piece!
+                    optionsGrid[rank, file] = true;
+                }
+            } else { // pos [rank, file] is empty
+                optionsGrid[rank, file] = true;
+            }
+        }
+        
+        // check DOWN
+        file = currFile;
+        rank = currRank - 1;
+        if(rank >= 0) {
+            if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+                if(manager.PieceOwner(pieces[rank, file]) == manager.PieceOwner(piece)) {
+                    optionsGrid[rank, file] = false;
+                } else { // it's an enemy piece!
+                    optionsGrid[rank, file] = true;
+                }
+            } else { // pos [rank, file] is empty
+                optionsGrid[rank, file] = true;
+            }
+        }
+        
+        // check UP
+        file = currFile;
+        rank = currRank + 1;
+        if(rank <= 7) {
+            if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+                if(manager.PieceOwner(pieces[rank, file]) == manager.PieceOwner(piece)) {
+                    optionsGrid[rank, file] = false;
+                } else { // it's an enemy piece!
+                    optionsGrid[rank, file] = true;
+                }
+            } else { // pos [rank, file] is empty
+                optionsGrid[rank, file] = true;
+            }
+        }
+        
+    } // END OF OptionsGrid()
 
     public override void MovePiece(Vector3 dest, bool attack)
     {
