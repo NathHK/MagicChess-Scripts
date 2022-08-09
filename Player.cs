@@ -62,17 +62,20 @@ public class Player
         GameObject tile;
         List<GameObject> destTiles;
 
+        // Clear the list of possible moves
+        allMoves.Clear();
+
         // Start by compiling a list of all possible moves
         foreach(GameObject piece in pieces)
         {
             // Manager.ValidDestinations() returns a List of GameObjects, which are the valid destinations for the 'piece' parameter
             
             // Iterate through all tile positions
-            for(int i = 0; i < 8; i=i+1){
-                for(int j = 0; j < 8; j=j+1){
+            for(int i = 0; i < 8; i=i+1) {
+                for(int j = 0; j < 8; j=j+1) {
 
                     // Start by getting the piece's current position
-                    if(manager.PieceAtTile(i,j) == piece){
+                    if(manager.PieceAtTile(i,j) == piece) {
                         
                         tile = board.TileFromArray(i,j).gameObject;
                         // All valid destinations for the piece:
@@ -97,7 +100,7 @@ public class Player
                         // --- <<< END OF DEBUGGING >>> ---
 
                         // Add all poss moves for that piece to allMoves:
-                        foreach(GameObject dest in destTiles){
+                        foreach(GameObject dest in destTiles) {
                             allMoves.Add(new Move(piece, tile, dest));
                         }
                     }
