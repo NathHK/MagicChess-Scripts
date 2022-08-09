@@ -199,6 +199,7 @@ public class Rook : PieceBaseClass
         
         // check RIGHT
         file = currFile + 1;
+        rank = currRank;
         while(file <= 7)
         {
             if(pieces[rank, file] != null) { // piece found at pos [rank, file]
@@ -218,6 +219,7 @@ public class Rook : PieceBaseClass
         
         // check DOWN
         rank = currRank - 1;
+        file = currFile;
         while(rank >= 0)
         {
             if(pieces[rank, file] != null) { // piece found at pos [rank, file]
@@ -237,6 +239,7 @@ public class Rook : PieceBaseClass
         
         // check UP
         rank = currRank + 1;
+        file = currFile;
         while(rank <= 7)
         {
             if(pieces[rank, file] != null) { // piece found at pos [rank, file]
