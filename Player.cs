@@ -66,7 +66,7 @@ public class Player
         allMoves.Clear();
 
         // Start by compiling a list of all possible moves
-        foreach(GameObject piece in pieces)
+        foreach(GameObject piece in pieces) // iterate through each of the current player's pieces
         {
             // Manager.ValidDestinations() returns a List of GameObjects, which are the valid destinations for the 'piece' parameter
             
