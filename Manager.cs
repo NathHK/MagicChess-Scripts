@@ -380,8 +380,14 @@ public class Manager : MonoBehaviour
         } //end of Queen
 
         else if(type.Contains("Rook")){
-            piece.GetComponent<Rook>().OptionsGrid(optionsGrid, currRank,currFile);
+            //piece.GetComponent<Rook>().OptionsGrid(optionsGrid, currRank,currFile);
+            piece.GetComponent<Rook>().OptionsGrid(pieces, optionsGrid, instance, currentPlayer, piece, currRank, currFile);
 
+            // NOTE:
+            //  I again sit here asking, "Past Nathan, why did you do this???"
+            //  I've written a new OptionsGrid() function for Rook.cs, so all this can be removed. 
+
+            /*
             //Can't access tiles beyond other pieces
             //check LEFT
             int rank = currRank;
@@ -468,6 +474,8 @@ public class Manager : MonoBehaviour
                     optionsGrid[rank,file] = false;
                 rank = rank-1;
             }
+        */
+
         } //end of ROOK
 
         // NOTE:
