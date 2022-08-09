@@ -183,21 +183,22 @@ public class Manager : MonoBehaviour
 
         } // end of BISHOP
 
-        else if(type.Contains("King")){
-            piece.GetComponent<King>().OptionsGrid(optionsGrid, currRank,currFile);
+        else if(type.Contains("King")) {
+            //piece.GetComponent<King>().OptionsGrid(optionsGrid, currRank,currFile);
+            piece.GetComponent<King>().OptionsGrid(pieces, optionsGrid, instance, currentPlayer, piece, currRank, currFile);
         }
 
-        else if(type.Contains("Horse")){
+        else if(type.Contains("Horse")) {
             piece.GetComponent<Knight>().OptionsGrid(optionsGrid, currRank,currFile);
         }
 
-        else if(type.Contains("Pawn")){ // <--- SPECIAL CASE
+        else if(type.Contains("Pawn")) { // <--- SPECIAL CASE
             bool hasMoved = movedPawns.Contains(piece);
             //piece.GetComponent<Pawn>().OptionsGrid(optionsGrid, currRank, currFile, hasMoved);
             piece.GetComponent<Pawn>().OptionsGrid(pieces, optionsGrid, instance, currentPlayer, currRank, currFile, hasMoved);
         }
 
-        else if(type.Contains("Queen")){
+        else if(type.Contains("Queen")) {
             piece.GetComponent<Queen>().OptionsGrid(optionsGrid, currRank,currFile);
 
             // This one's a mess, huh? :')
@@ -379,7 +380,7 @@ public class Manager : MonoBehaviour
             }
         } //end of Queen
 
-        else if(type.Contains("Rook")){
+        else if(type.Contains("Rook")) {
             //piece.GetComponent<Rook>().OptionsGrid(optionsGrid, currRank,currFile);
             piece.GetComponent<Rook>().OptionsGrid(pieces, optionsGrid, instance, currentPlayer, piece, currRank, currFile);
 
@@ -387,8 +388,7 @@ public class Manager : MonoBehaviour
             //  I again sit here asking, "Past Nathan, why did you do this???"
             //  I've written a new OptionsGrid() function for Rook.cs, so all this can be removed. 
 
-            /*
-            //Can't access tiles beyond other pieces
+            /* //Can't access tiles beyond other pieces
             //check LEFT
             int rank = currRank;
             int file = currFile-1;
@@ -473,8 +473,7 @@ public class Manager : MonoBehaviour
                 if((pieceFound && rank<pFoundAt) || (validFound && rank<vFoundAt))
                     optionsGrid[rank,file] = false;
                 rank = rank-1;
-            }
-        */
+            } */
 
         } //end of ROOK
 
