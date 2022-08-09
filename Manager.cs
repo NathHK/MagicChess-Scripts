@@ -470,6 +470,11 @@ public class Manager : MonoBehaviour
             }
         } //end of ROOK
 
+        // NOTE:
+        //  Why did I do these logic calculations *here* of all places??? 
+        //  Not sure what will happen as a result of block-commenting all this out, but it should be done in the PieceClasses files anyways.
+
+        /* 
         // Iterate through optionsGrid. For each /true/, check for a piece at the corresponding position in the pieces array
         if(team == "white") //the piece attempting to move is white
         {
@@ -498,7 +503,16 @@ public class Manager : MonoBehaviour
                 }
             }
         }
+        */
 
+        // Using optionsGrid as reference, add valid dest tiles to validTiles
+        for(int i = 0; i <= 7; i = i + 1) {
+            for(int j = 0; j <= 7; j = j + 1) {
+                if(optionsGrid[i, j]) {
+                    validTiles.Add(board.TileFromArray(i, j).gameObject);
+                }
+            }
+        }
 
         return validTiles;
 
