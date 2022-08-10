@@ -189,7 +189,8 @@ public class Manager : MonoBehaviour
         }
 
         else if(type.Contains("Horse")) {
-            piece.GetComponent<Knight>().OptionsGrid(optionsGrid, currRank,currFile);
+            //piece.GetComponent<Knight>().OptionsGrid(optionsGrid, currRank,currFile);
+            piece.GetComponent<Knight>().OptionsGrid(pieces, optionsGrid, instance, currentPlayer, piece, currRank, currFile);
         }
 
         else if(type.Contains("Pawn")) { // <--- SPECIAL CASE
