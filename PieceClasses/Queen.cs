@@ -106,9 +106,12 @@ public class Queen : PieceBaseClass
         return validDestinations;
     }
 
+    // Old function with body commented-out. Should never be called.
     public override void OptionsGrid(bool[,] theGrid, int currRank, int currFile)
     {
-        bool[,] grid = new bool[8,8];
+        Debug.Log("Running old OptionsGrid function in file Queen.cs!!!");
+
+        /* bool[,] grid = new bool[8,8];
 
         //set counters to current values
         int rank = currRank;
@@ -192,10 +195,203 @@ public class Queen : PieceBaseClass
         while(file>=0 && file<=7){
             theGrid[rank,file] = true;
             file = file+1;
-        }
+        } */
 
     }
 
+    // pieces : current locations of all pieces on the board
+    // optionsGrid : validity of destinations; starts all false
+    // manager : manager of the current game
+    // currentPlayer : player whose turn it is
+    // piece : the piece to determine the valid destinations for
+    // currRank : current rank of piece
+    // currFile : current file of piece
+    public void OptionsGrid(GameObject[,] pieces, bool[,] optionsGrid, Manager manager, Player currentPlayer, GameObject piece, int currRank, int currFile) 
+    { 	
+		/* MOVEMENT RULES:
+		 * Combination of bishop and rook
+		 */
+		 
+		// Reminder:
+		// Vertical movement = changing rank
+		// Horizontal movement = changing file
+		
+		// NOTE:
+		// Is there a way to safely access Bishop.cs and Rook.cs?
+		// It would be cleaner than copying code from those scripts and pasting it here.
+		// I can't rely on the existence of the pieces themselves, since they're destroyed when killed.
+		// A possible solution is to change the PieceClasses Update() functions so that, rather than calling Destroy() when the parent piece is killed, the piece is moved off of the board to somewhere out of view.
+		
+		// --- <<< BISHOP's MOVEMENT >>> ---
+		
+		// check LEFT & UP:
+        int rank = currRank+1;
+        int file = currFile-1;
+		
+		while(rank >= 0 && rank <= 7 && file >= 0 && file <= 7)
+		{
+			if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+				if(manager.PieceOwner(pieces[rank,file]) == manager.PieceOwner(piece)) {
+					optionsGrid[rank, file] = false; 
+				} else { // it's an enemy piece!
+					optionsGrid[rank, file] = true;
+				}
+				break;
+			} else { // pos [rank, file] is empty
+				optionsGrid[rank, file] = true;
+			}
+			// Move to next pos along this diagonal:
+			rank += 1; // up
+			file -= 1; // left
+		}
+		
+		// check RIGHT & UP:
+		rank = currRank + 1;
+		file = currFile + 1;
+		
+		while(rank >= 0 && rank <= 7 && file >= 0 && file <= 7)
+		{
+			if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+				if(manager.PieceOwner(pieces[rank,file]) == manager.PieceOwner(piece)) {
+					optionsGrid[rank, file] = false; 
+				} else { // it's an enemy piece!
+					optionsGrid[rank, file] = true;
+				}
+				break;
+			} else { // pos [rank, file] is empty
+				optionsGrid[rank, file] = true;
+			}
+			// Move to next pos along this diagonal:
+			rank += 1; // up
+			file += 1; // right
+		}
+		
+		// check LEFT & DOWN:
+		rank = currRank - 1;
+		file = currFile - 1;
+		
+		while(rank >= 0 && rank <= 7 && file >= 0 && file <= 7)
+		{
+			if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+				if(manager.PieceOwner(pieces[rank,file]) == manager.PieceOwner(piece)) {
+					optionsGrid[rank, file] = false; 
+				} else { // it's an enemy piece!
+					optionsGrid[rank, file] = true;
+				}
+				break;
+			} else { // pos [rank, file] is empty
+				optionsGrid[rank, file] = true;
+			}
+			// Move to next pos along this diagonal:
+			rank -= 1; // down
+			file -= 1; // left
+		}
+		
+		// check RIGHT & DOWN:
+		rank = currRank - 1;
+		file = currFile + 1;
+		
+		while(rank >= 0 && rank <= 7 && file >= 0 && file <= 7)
+		{
+			if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+				if(manager.PieceOwner(pieces[rank,file]) == manager.PieceOwner(piece)) {
+					optionsGrid[rank, file] = false; 
+				} else { // it's an enemy piece!
+					optionsGrid[rank, file] = true;
+				}
+				break;
+			} else { // pos [rank, file] is empty
+				optionsGrid[rank, file] = true;
+			}
+			// Move to next pos along this diagonal:
+			rank -= 1; // down
+			file += 1; // right
+		}
+		
+		// --- <<< ROOK's MOVEMENT >>> ---
+		
+		// check LEFT
+        file = currFile - 1;
+        rank = currRank;
+        while(file >= 0)
+        {
+            if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+                if(manager.PieceOwner(pieces[rank, file]) == manager.PieceOwner(piece)) {
+                    optionsGrid[rank, file] = false;
+                } else { // it's an enemy piece!
+                    optionsGrid[rank, file] = true;
+                }
+                // A piece has been found along this path, so all postions past pos [rank, file] are invalid destinations. Thus, their values should remain false, and we are able to stop looping.
+                break;
+            } else { // pos [rank, file] is empty
+                optionsGrid[rank, file] = true;
+            }
+            // Move to next pos along this path (leftward):
+            file -= 1;
+        }
+        
+        // check RIGHT
+        file = currFile + 1;
+        rank = currRank;
+        while(file <= 7)
+        {
+            if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+                if(manager.PieceOwner(pieces[rank, file]) == manager.PieceOwner(piece)) {
+                    optionsGrid[rank, file] = false;
+                } else { // it's an enemy piece!
+                    optionsGrid[rank, file] = true;
+                }
+                // A piece has been found along this path => break while loop
+                break;
+            } else { // pos [rank, file] is empty
+                optionsGrid[rank, file] = true;
+            }
+            // Move to next pos along this path (rightward):
+            file += 1;
+        }
+        
+        // check DOWN
+        rank = currRank - 1;
+        file = currFile;
+        while(rank >= 0)
+        {
+            if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+                if(manager.PieceOwner(pieces[rank, file]) == manager.PieceOwner(piece)) {
+                    optionsGrid[rank, file] = false;
+                } else { // it's an enemy piece!
+                    optionsGrid[rank, file] = true;
+                }
+                // A piece has been found along this path => break while loop
+                break;
+            } else { // pos [rank, file] is empty
+                optionsGrid[rank, file] = true;
+            }
+            // Move to next pos along this path (downward):
+            rank -= 1;
+        }
+        
+        // check UP
+        rank = currRank + 1;
+        file = currFile;
+        while(rank <= 7)
+        {
+            if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+                if(manager.PieceOwner(pieces[rank, file]) == manager.PieceOwner(piece)) {
+                    optionsGrid[rank, file] = false;
+                } else { // it's an enemy piece!
+                    optionsGrid[rank, file] = true;
+                }
+                // A piece has been found along this path => break while loop
+                break;
+            } else { // pos [rank, file] is empty
+                optionsGrid[rank, file] = true;
+            }
+            // Move to next pos along this path (upward):
+            rank += 1;
+        }
+		
+	} // END OF OptionsGrid()
+	
     public override void MovePiece(Vector3 dest, bool attack)
     {
 
