@@ -201,7 +201,7 @@ public class Manager : MonoBehaviour
 
         else if(type.Contains("Queen")) {
             //piece.GetComponent<Queen>().OptionsGrid(optionsGrid, currRank,currFile);
-            piece.GetComponent<King>().OptionsGrid(pieces, optionsGrid, instance, currentPlayer, piece, currRank, currFile);
+            piece.GetComponent<Queen>().OptionsGrid(pieces, optionsGrid, instance, currentPlayer, piece, currRank, currFile);
         }
 
         else if(type.Contains("Rook")) {
