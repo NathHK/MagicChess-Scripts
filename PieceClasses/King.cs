@@ -258,6 +258,66 @@ public class King : PieceBaseClass
                 optionsGrid[rank, file] = true;
             }
         }
+
+        // check LEFT & UP
+        rank = currRank + 1;
+        file = currFile - 1;
+        if(rank <= 7 && file >= 0) {
+            if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+                if(manager.PieceOwner(pieces[rank, file]) == manager.PieceOwner(piece)) {
+                    optionsGrid[rank, file] = false;
+                } else { // it's an enemy piece!
+                    optionsGrid[rank, file] = true;
+                }
+            } else { // pos [rank, file] is empty
+                optionsGrid[rank, file] = true;
+            }
+        }
+
+        // check RIGHT & UP
+        rank = currRank + 1;
+        file = currFile + 1;
+        if(rank <= 7 && file <= 7) {
+            if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+                if(manager.PieceOwner(pieces[rank, file]) == manager.PieceOwner(piece)) {
+                    optionsGrid[rank, file] = false;
+                } else { // it's an enemy piece!
+                    optionsGrid[rank, file] = true;
+                }
+            } else { // pos [rank, file] is empty
+                optionsGrid[rank, file] = true;
+            }
+        }
+
+        // check LEFT & DOWN
+        rank = currRank - 1;
+        file = currFile - 1;
+        if(rank >= 0 && file >= 0) {
+            if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+                if(manager.PieceOwner(pieces[rank, file]) == manager.PieceOwner(piece)) {
+                    optionsGrid[rank, file] = false;
+                } else { // it's an enemy piece!
+                    optionsGrid[rank, file] = true;
+                }
+            } else { // pos [rank, file] is empty
+                optionsGrid[rank, file] = true;
+            }
+        }
+
+        // check RIGHT & DOWN
+        rank = currRank - 1;
+        file = currFile + 1;
+        if(rank >= 0 && file <= 7) {
+            if(pieces[rank, file] != null) { // piece found at pos [rank, file]
+                if(manager.PieceOwner(pieces[rank, file]) == manager.PieceOwner(piece)) {
+                    optionsGrid[rank, file] = false;
+                } else { // it's an enemy piece!
+                    optionsGrid[rank, file] = true;
+                }
+            } else { // pos [rank, file] is empty
+                optionsGrid[rank, file] = true;
+            }
+        }
         
     } // END OF OptionsGrid()
 
