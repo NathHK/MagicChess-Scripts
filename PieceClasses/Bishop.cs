@@ -271,7 +271,7 @@ public class Bishop : PieceBaseClass
     private void OnCollisionEnter(Collision other) {
        
        // Only take damage from weapons that are not your own
-        if(other.gameObject.tag.Contains("Weapon") && other.gameObject != weapon)
+        if(other.gameObject.tag.Contains("Weapon") && other.gameObject != weapon && other.gameObject.tag != weapon.tag)
         {
             Debug.Log(other.gameObject.tag);
             if(anim.GetBool("injured")){

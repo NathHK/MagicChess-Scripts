@@ -357,7 +357,7 @@ public class King : PieceBaseClass
 
     private void OnCollisionEnter(Collision other) {
        
-        if(other.gameObject.tag.Contains("Weapon") && other.gameObject != weapon)
+        if(other.gameObject.tag.Contains("Weapon") && other.gameObject != weapon && other.gameObject.tag != weapon.tag)
         {
             Debug.Log(other.gameObject.tag);
             if(anim.GetBool("injured")){

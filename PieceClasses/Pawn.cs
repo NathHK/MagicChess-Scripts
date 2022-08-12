@@ -229,8 +229,11 @@ public class Pawn : PieceBaseClass
        // Turns out that Pawn is the only file to include the check for 
        //       && other.gameObject.tag != weapon.tag
        // Interesting... Maybe I originally had it there for all of them, later removed it, but accidentally left it in Pawn.cs.
+       //   ACTUALLY:
+       //   It checks to make sure that the weapon does not belong to a teammate. Every weapon is tagged either "WhiteWeapon" or "BlackWeapon" depending on the piece it belongs to. 
+       //   Now that I've realized this, I feel that it might be a good inclusion in all the PieceClasses scripts.
 
-        if(other.gameObject.tag.Contains("Weapon") && other.gameObject != weapon)// && other.gameObject.tag != weapon.tag)
+        if(other.gameObject.tag.Contains("Weapon") && other.gameObject != weapon && other.gameObject.tag != weapon.tag)
         {
             Debug.Log(other.gameObject.tag);
             if(anim.GetBool("injured")){
