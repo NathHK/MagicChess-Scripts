@@ -1,6 +1,8 @@
 # MagicChess-Scripts
-Scripts from the MagicChess project, sourced directly from the file directory on my computer.
+Scripts from my MagicChess Unity project, sourced directly from the file directory on my computer.
 
-This makes the magic-chess repository I previously made on GitHub functionally useless. 
+This is a project I am actively working on; I'd say it's roughly 80% complete. For information on what's left, see **Issues**—it's mostly bug-squashing.
 
-**Nice.**
+## What is it?
+
+MagicChess is an implementation of *Harry Potter's* Wizard's Chess, made in Unity.
