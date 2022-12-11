@@ -1,5 +1,6 @@
 # MagicChess-Scripts
-Scripts from my MagicChess Unity project, sourced directly from the local repository on my computer.
+
+Scripts from my MagicChess Unity game.
 
 This is a project I am (semi-)actively working on; I'd say it's roughly 80% complete. For information on what's left, see **Issues**—it's almost entirely bug-squashing.
 
