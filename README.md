@@ -30,7 +30,7 @@ This repository only includes the project's C# scripts, but they are part of a f
    
 #### 3. Three Gameplay Modes   
 
-   1. **Standard:** The player controls the white pieces. Their AI-opponent always selects a _**random**_ move, chosen from a pool of all valid moves. 
+   1. **Normal:** The player controls the white pieces. Their AI-opponent always selects a _**random**_ move, chosen from a pool of all valid moves. 
    2. **Hard:** The player controls the white pieces. Their AI-opponent selects moves using the _**minimax algorithm with alpha-beta pruning**_.
    3. **Simulation:** Both teams are controlled by AI, and move-selection is done using the _**minimax algorithm**_. The two AI teams will take turns moving until end of game, or until the user selects a different gamemode (whichever comes first). 
    
@@ -41,6 +41,12 @@ This repository only includes the project's C# scripts, but they are part of a f
 ["Wood Set Pieces" by Eternal Echoes Entertainment](https://assetstore.unity.com/packages/3d/props/wood-set-pieces-33853) - Wooden texture I used for designing the chess board.
 
 [freesound.org](https://freesound.org/) - Source of all sound effects. 
+
+## Screenshots
+
+![Chess pieces on the board](https://user-images.githubusercontent.com/72760647/206881338-ef6f1132-fa83-4c1a-b186-094a53a227b0.png)
+![Tiles highlighted in green and blue when the player makes a valid selection](https://user-images.githubusercontent.com/72760647/206881347-462a2b4f-48c6-4884-9395-b5d4d59cffee.png)
+![Tile highlighted in yellow when the player makes an invalid selection](https://user-images.githubusercontent.com/72760647/206881357-e5d5f2ed-0ded-4299-ad81-6a63657898f2.png)
 
 ## License
 
